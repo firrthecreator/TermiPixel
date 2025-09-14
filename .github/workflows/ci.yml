@@ -1,0 +1,49 @@
+# The name of the workflow as it will appear in the "Actions" tab on GitHub.
+name: C++ CI
+
+# Event triggers that determine when this workflow should run.
+on:
+  # Trigger the workflow when code is pushed to the 'main' branch.
+  push:
+    branches: [ "main" ]
+  # Trigger the workflow when a pull request targets the 'main' branch.
+  pull_request:
+    branches: [ "main" ]
+
+# A list of jobs that will be executed as part of this workflow.
+jobs:
+  # A single job named 'build'.
+  build:
+    # The operating system to use for the job.
+    # 'ubuntu-latest' is a common choice for Linux-based builds.
+    runs-on: ubuntu-latest
+
+    # A sequence of steps to execute within this job.
+    steps:
+      # Step 1: Check out the repository code.
+      # This pulls the source code into the GitHub-hosted runner.
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # Step 2: Install required dependencies.
+      # While GitHub runners come with many tools pre-installed,
+      # explicitly installing build tools ensures consistency and reliability.
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+      # Step 3: Configure the project using CMake.
+      # This is equivalent to running: mkdir build && cd build && cmake ..
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build
+
+      # Step 4: Build the project.
+      # This compiles the source code inside the build directory.
+      - name: Build project
+        run: cmake --build ${{github.workspace}}/build
+
+      # Step 5: Run unit tests.
+      # CTest will automatically discover and execute tests defined in the project.
+      # The --verbose flag provides detailed output for easier debugging.
+      - name: Run tests
+        run: ctest --test-dir ${{github.workspace}}/build --verbose
+        
