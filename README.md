@@ -42,14 +42,7 @@ To build TermiPixel, you need:
    cd TermiPixel
    ```
 
-2. **Download dependencies**  
-   Download the following headers and place them in the `lib/` directory:
-   - [`stb_image.h`](https://github.com/nothings/stb/blob/master/stb_image.h)
-   - [`cxxopts.hpp`](https://github.com/jarro2783/cxxopts)
-
-   > Alternatively, you can set them up as Git submodules.
-
-3. **Configure and build with CMake**
+2. **Configure and build with CMake**
    ```bash
    mkdir build
    cd build
@@ -57,7 +50,7 @@ To build TermiPixel, you need:
    make
    ```
 
-4. **Install (optional)**
+3. **Install (optional)**
    ```bash
    sudo make install
    ```
